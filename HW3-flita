@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#define FILENAME "../matrix_of_incendence50.txt"
+#define FILENAME "../test.txt"
 #define MAX_SIZE 50
 
 
@@ -44,7 +44,16 @@ int main() {
 
     Edge_t edge;
     bool NotLoop = false;
+    bool freeNode = true;
 
+    for (int p = 0; p < vertexes; p++) {
+        freeNode = true;
+        for (int q = 0; q < edges; q++) {
+            if (matrix[p][q] == 1) {freeNode = false; break;}
+        }
+        if (!freeNode) {fprintf(dotFile, "\t%d;\n", p+1);}
+    }
+    //printf("%d", vertexes);
     for (int p = 0; p < edges; p++) {
         for (int q = 0; q < vertexes; q++) {
             if (matrix[p][q] == 1) {
@@ -57,13 +66,11 @@ int main() {
                 }
                 NotLoop = true;
             }
-
             else continue;
         }
         NotLoop = false;
         fprintf(dotFile, "\t%d -- %d; \n", edge.originNode, edge.destNode);
     }
-
     fprintf(dotFile, "}");
     fclose(dotFile);
 
@@ -72,6 +79,5 @@ int main() {
 
     if (edges > ((vertexes -1 ) * (vertexes - 2)) / 2) printf("The graph is bonded"); //
     else printf("The graph is NOT bonded");
-
     return 0;
 }
